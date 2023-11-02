@@ -1,4 +1,4 @@
-
+var currentHour = 0;
  var todayP = $('#currentDay');
  var saveBtn = document.querySelector(".saveBtn");
 
@@ -11,7 +11,7 @@ var timeBlockEl = document.querySelector('.container');
 // Function to track tasks and make them change colors if they are in the past, present or future
 function colorCodeTask() {
     // get current number of hours
-    var currentHour = today.hour();
+    currentHour = dayjs().hour();
    console.log("current hour:" + currentHour);
     // loop over each time block
     $('.time-block').each(function () {
@@ -19,6 +19,8 @@ function colorCodeTask() {
         console.log("hour id:" + hourId);
       // if the hour Id attribute is before the current hour, add the past class
       if (hourId < currentHour) {
+        $(this).removeClass('present');
+         $(this).removeClass('future');
         $(this).addClass('past');
       } // if the hour Id attribute is equal to the current hour, remove the past and future classes and add the present class
       else if (hourId === currentHour) {
@@ -66,3 +68,11 @@ $('.saveBtn').on('click', function () {
 
   // Call the color code  task function
 colorCodeTask();
+
+setInterval(checkHour, 60000);
+//refresh the colorcode every hour
+function checkHour(){
+  if(currentHour != dayjs().hour()){
+    colorCodeTask();
+  }
+}
